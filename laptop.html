@@ -1,0 +1,309 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Interactive Laptop</title>
+    <style>
+        :root {
+            --laptop-color: #202020;
+            --screen-color: #0a0a0a;
+            --keyboard-color: #303030;
+            --highlight-color: #ffffff40;
+            --reflection-color: #ffffff10;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            background: linear-gradient(135deg, #1e1e2f, #2a2a3a);
+            font-family: 'Segoe UI', system-ui, sans-serif;
+            perspective: 1000px;
+        }
+
+        .laptop-container {
+            position: relative;
+            width: 800px;
+            height: 500px;
+            transform-style: preserve-3d;
+            transition: transform 0.5s ease;
+        }
+
+        .laptop {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            transform-style: preserve-3d;
+            animation: float 6s ease-in-out infinite;
+        }
+
+        .base {
+            position: absolute;
+            width: 95%;
+            height: 60%;
+            bottom: 0;
+            left: 2.5%;
+            background: var(--laptop-color);
+            border-radius: 10px 10px 0 0;
+            transform: translateZ(-20px);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+            overflow: hidden;
+        }
+
+        .base::before {
+            content: '';
+            position: absolute;
+            top: 5%;
+            left: 5%;
+            right: 5%;
+            height: 1px;
+            background: linear-gradient(to right, transparent, var(--highlight-color), transparent);
+        }
+
+        .keyboard {
+            position: absolute;
+            width: 92%;
+            height: 85%;
+            bottom: 10px;
+            left: 4%;
+            background: var(--keyboard-color);
+            border-radius: 5px;
+            box-shadow: inset 0 -5px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .trackpad {
+            position: absolute;
+            width: 150px;
+            height: 100px;
+            bottom: 20px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #252525;
+            border-radius: 5px;
+            box-shadow: inset 0 0 10px rgba(0, 0, 0, 0.7);
+        }
+
+        .screen {
+            position: absolute;
+            width: 85%;
+            height: 75%;
+            top: 0;
+            left: 7.5%;
+            background: var(--screen-color);
+            border: 15px solid var(--laptop-color);
+            border-radius: 10px 10px 0 0;
+            transform-origin: bottom center;
+            transform-style: preserve-3d;
+            transition: transform 1s ease;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.7);
+            overflow: hidden;
+        }
+
+        .screen::after {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: linear-gradient(
+                135deg,
+                var(--reflection-color) 0%,
+                transparent 20%,
+                transparent 80%,
+                var(--reflection-color) 100%
+            );
+        }
+
+        .display {
+            width: 100%;
+            height: 100%;
+            background: #000;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            color: #fff;
+            font-size: 24px;
+        }
+
+        .webpage {
+            width: 100%;
+            height: 100%;
+            padding: 20px;
+            background: #121212;
+            color: #fff;
+            overflow: hidden;
+        }
+
+        .webpage img {
+            width: 100%;
+            height: auto;
+            border-radius: 5px;
+        }
+
+        .webpage-content {
+            padding: 20px;
+            text-align: center;
+        }
+
+        .hinge {
+            position: absolute;
+            width: 120px;
+            height: 10px;
+            top: -5px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: #151515;
+            border-radius: 5px;
+            z-index: -1;
+        }
+
+        .power-button {
+            position: absolute;
+            width: 10px;
+            height: 30px;
+            right: 10px;
+            top: 50%;
+            transform: translateY(-50%);
+            background: #404040;
+            border-radius: 3px;
+        }
+
+        .ports {
+            position: absolute;
+            width: 120px;
+            height: 10px;
+            left: 20px;
+            bottom: 10px;
+        }
+
+        .port {
+            display: inline-block;
+            width: 8px;
+            height: 10px;
+            margin-right: 10px;
+            background: #505050;
+            border-radius: 2px;
+        }
+
+        .controls {
+            position: absolute;
+            bottom: 10px;
+            width: 100%;
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+        }
+
+        .controls button {
+            padding: 8px 15px;
+            background: #333;
+            color: white;
+            border: none;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: background 0.3s;
+        }
+
+        .controls button:hover {
+            background: #444;
+        }
+
+        @keyframes float {
+            0%, 100% { transform: translateY(0px); }
+            50% { transform: translateY(-15px); }
+        }
+
+        @media (max-width: 900px) {
+            .laptop-container {
+                width: 600px;
+                height: 400px;
+            }
+        }
+
+        @media (max-width: 600px) {
+            .laptop-container {
+                width: 400px;
+                height: 300px;
+            }
+            
+            .display {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="laptop-container">
+        <div class="laptop">
+            <div class="hinge"></div>
+            
+            <div class="screen" id="screen">
+                <div class="display">
+                    <div class="webpage">
+                        <img src="https://placehold.co/1600x900" alt="Beautiful abstract digital art showing flowing lines and glowing particles on a dark background" />
+                        <div class="webpage-content">
+                            <h2>Digital Workspace</h2>
+                            <p>Modern computing at your fingertips</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="base">
+                <div class="keyboard"></div>
+                <div class="trackpad"></div>
+                <div class="power-button"></div>
+                <div class="ports">
+                    <div class="port"></div>
+                    <div class="port"></div>
+                    <div class="port"></div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="controls">
+        <button onclick="openLaptop()">Open</button>
+        <button onclick="closeLaptop()">Close</button>
+        <button onclick="changeWallpaper()">Change Wallpaper</button>
+    </div>
+
+    <script>
+        const screen = document.getElementById('screen');
+        let isOpen = true;
+        
+        function openLaptop() {
+            if (isOpen) return;
+            screen.style.transform = 'rotateX(0deg)';
+            isOpen = true;
+        }
+        
+        function closeLaptop() {
+            if (!isOpen) return;
+            screen.style.transform = 'rotateX(80deg)';
+            isOpen = false;
+        }
+        
+        function changeWallpaper() {
+            const images = [
+                "https://placehold.co/1600x900/000000/FFFFFF/PNG?text=Abstract+Waves",
+                "https://placehold.co/1600x900/111111/EEEEEE/PNG?text=Grid+Pattern",
+                "https://placehold.co/1600x900/222222/DDDDDD/PNG?text=Tech+Circles",
+                "https://placehold.co/1600x900/333333/CCCCCC/PNG?text=Mountain+View"
+            ];
+            
+            const randomImage = images[Math.floor(Math.random() * images.length)];
+            document.querySelector('.webpage img').src = randomImage;
+        }
+    </script>
+</body>
+</html>
